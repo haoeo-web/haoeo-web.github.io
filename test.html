@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>man</title>
+    <style>
+        #man {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-image: url('./img-js/t01640b6e806599cdd0.jpg');
+            background-size: cover;
+
+        }
+
+        .big {
+            width: 700px;
+            height: 700px;
+            border: red solid 2px;
+            position: relative;
+            margin: 20px auto;
+            perspective: 300px;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotateX(0deg);
+            }
+
+            100% {
+                transform: rotateX(360deg);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="big">
+        <div id="man"></div>
+    </div>
+    <script>
+        const div = document.querySelector('.big');
+        const man = document.querySelector('#man');
+        let x
+        const hero = {
+            x: 0,
+            y: 0,
+            speed: 10,
+            jumpspeed: 20,
+            gravity: 0.8,//重力
+        }
+        const code = {
+            37: false,//左
+            38: false,//上
+            39: false,//右
+            40: false,//下
+            32: false//空格
+        }
+        // function move() {
+        //     console.log('调用move');
+        //     if (code[37] && hero.x > 0) {
+        //         console.log('调用左');
+        //         hero.x -= hero.speed;
+        //         console.log(hero.x);
+        //     }
+        //     if (code[39] && hero.x < 600) {
+        //         console.log('调用右');
+        //         hero.x += hero.speed;
+        //         console.log(hero.x);
+        //     }
+        //     man.style.left = hero.x + 'px';
+        // };
+        let isjump = false;
+        document.addEventListener('keydown', element => {
+            console.log(element.keyCode);
+            code[element.keyCode] = true;
+            // move();
+        })
+        document.addEventListener('keyup', element => {
+            console.log(element.keyCode);
+            code[element.keyCode] = false;
+            // move();
+        })
+        // move();
+        setInterval(() => {
+            if (code[37] && hero.x > 0) {
+                console.log('调用左');
+                hero.x -= hero.speed;
+                console.log(hero.x);
+            }
+            if (code[39] && hero.x < 600) {
+                console.log('调用右');
+                hero.x += hero.speed;
+                console.log(hero.x);
+            }
+            man.style.left = hero.x + 'px';
+            if (code[32] && !isjump) {
+                isjump = true;
+                let jumheight = 0;
+                console.log('调用空格');
+                const jumpup = setInterval(() => {
+                    console.log('调用跳跃');
+                    man.style.animation = 'rotate 0.5s linear';
+                    jumheight += hero.jumpspeed;
+                    hero.y += hero.jumpspeed;
+                    hero.jumpspeed -= hero.gravity;//重力  加速度 跳跃整个过程
+                    man.style.bottom = hero.y + 'px';
+                    if (hero.y <= 0) {
+                        console.log('跳跃完成');
+                        clearInterval(jumpup);
+                        isjump = false;
+                        hero.jumpspeed = 20;
+                        man.style.animation = 'none'
+                    }
+                }, 10);//跳跃
+            }
+        }, 10)
+
+    </script>
+</body>
+
+</html>
+<!-- // 32 空格
+
+
+// let arr = []
+// for (let i = 0; i < 3; i++) { // arr[i]=i // } // let a=arr.length // document.write(a) -->
